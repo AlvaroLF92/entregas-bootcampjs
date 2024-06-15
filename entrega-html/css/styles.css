@@ -109,20 +109,35 @@
   margin: 0.5rem;
   padding: 0.5rem;
 }
+footer div {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 5px;
+  gap: 1rem;
+}
 
 footer p {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
   font-size: 8px;
   color: var(--primary-color)
+
 }
 
+.footer-box-item {
+  border-radius: 50%;
+  overflow: hidden;
+}
 
-footer img {
-  border-radius: 45%;
-  padding: 8px;
+footer div img {
+  display: flex;
+  padding: 10px;
   background-color: var(--primary-color);
+  width: 100%;
+
 }
+
 
 footer p:hover {
   cursor: pointer;
