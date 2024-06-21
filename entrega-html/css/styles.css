@@ -97,8 +97,7 @@
 } 
 .card-info {
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  gap: 5rem;
 }
 
 .footer-content {
