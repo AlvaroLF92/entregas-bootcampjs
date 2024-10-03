@@ -51,11 +51,11 @@ function decreaseCounter () {
   counter--;
   if ( currentTurn !== null && currentTurn !== undefined ) {
 
-    currentTurn.innerHTML = counter.toString().padStart(2  , "0" );;
+    currentTurn.innerHTML = counter.toString().padStart( 2 , "0");
 
-  }
 }
 
+}
 function resetCounter () {
 
   counter = 0;
