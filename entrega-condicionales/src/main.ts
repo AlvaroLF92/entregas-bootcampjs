@@ -1,86 +1,180 @@
 import "./style.css";
 import { cardSource } from "./cards";
 
-// Variables
+// Variables;
 
 let userScore: number = 0;
+let selectedCard: { url: string; value: number };
 
-// Enlaces a elementos HTML
+// Enlaces a elementos HTML;
 
-const gameMessage = document.getElementById("gameStatus") as HTMLElement;
-const getCardButton = document.getElementById("getCard") as HTMLButtonElement;
-const standButton = document.getElementById('stand') as HTMLButtonElement;
-const newGameButton = document.getElementById("newGame") as HTMLButtonElement;
-const showCard = document.getElementById("gameScore") as HTMLElement;
-const currentCard = document.getElementById("currentCard") as HTMLImageElement;
+const gameMessage = document.getElementById("gameStatus");
+const getCardButton = document.getElementById("getCard");
+const standButton = document.getElementById("stand");
+const newGameButton = document.getElementById("newGame");
+const showCard = document.getElementById("gameScore");
+const currentCard = document.getElementById("currentCard");
+const knowOutComeButton = document.getElementById("knowOutCome");
 
-// Desactivamos y ocultamos el botón de "New Game"
+// Función que devuelve un número aleatorio;
 
-newGameButton.disabled = true;
-newGameButton.style.display = "none";
-
-// Funcion "giveCard" para recibir carta y actualizar puntuación de jugador.
-
-const giveCard = () => {
-
-  const randomCard = Math.floor(Math.random() * cardSource.length);
-
-  const selectedCard = cardSource[randomCard];
-  currentCard.src = selectedCard.url;
-
-  userScore += selectedCard.value;
-
-  if ( showCard ) {
-    showCard.textContent = `Puntuación: ${userScore}`;
-  };
-
-  checkScore(userScore);
+const getRandomNumber = (): number => {
+  return Math.floor(Math.random() * cardSource.length);
 };
 
+// Función que ajusta el número si es mayor que 7 sumando +2;
 
-// Función para comprobar la puntuación y terminar el juego.
+/*const adjustNumber = (num: number): number => {
+  return num > 7 ? num + 2 : num;
+};*/
 
-const checkScore = (score:number):void => {
-  if ( score === 7.5 ) {
-    gameMessage.textContent = "¡Lo has conseguido! !Felicidades¡";
-    endGame();
-  } else if ( score > 7.5) {
-    gameMessage.textContent = "Game Over";
-    endGame();
+// Funcion que muestra la puntuación total en el HTML;
+
+const updateScoreDisplay = (): void => {
+  if (showCard instanceof HTMLElement) {
+    showCard.textContent = `Score: ${userScore}`;
   }
 };
 
-// Función para terminar el juego
+// Funcion que devuelve la url de la carta elegida;
 
-const endGame = () => {
-  getCardButton.disabled = true;
-  newGameButton.disabled = false;
-  standButton.disabled = true;
-  newGameButton.style.display = "block";
+const getCardUrl = (): string => {
+  const cardIndex = getRandomNumber();
+  selectedCard = cardSource[cardIndex];
+  return selectedCard.url;
 };
 
-// Funcion New Game
+// Funcion que muestra la carta seleccionada en el HTML;
 
-const newGame = () => {
+const displayCard = (): void => {
+  const cardUrl = getCardUrl();
+  if (currentCard instanceof HTMLImageElement) {
+    currentCard.src = cardUrl;
+  }
+};
+
+// Funcion que calcula el valor de la carta seleccionada;
+
+const selectedCardValue = (): number => {
+  return selectedCard.value;
+};
+
+// Funcion que suma el valor de las cartas;
+
+const sumCardValue = (): number => {
+  return userScore + selectedCardValue();
+};
+
+// Funcion que actualiza userScore;
+
+const updateUserScore = () => {
+  userScore = sumCardValue();
+  updateScoreDisplay();
+};
+
+// Función que comprueba si hemos ganado o no la partida;
+
+const checkGameStatus = (): void => {
+  if (userScore === 7.5 && gameMessage != null) {
+    gameMessage.textContent = "!Has ganado¡";
+    toggleButtons(true);
+  } else if (userScore > 7.5 && gameMessage != null) {
+    gameMessage.textContent = "!Has perdido¡";
+    toggleButtons(true);
+  }
+};
+
+// Función que habilita o deshabilita los botones;
+
+const toggleButtons = (disable: boolean): void => {
+  if (
+    getCardButton instanceof HTMLButtonElement &&
+    standButton instanceof HTMLButtonElement &&
+    newGameButton instanceof HTMLButtonElement
+  ) {
+    getCardButton.disabled = disable;
+    standButton.disabled = disable;
+    newGameButton.disabled = !disable;
+    newGameButton.style.display = disable ? "inline-block" : "none";
+  }
+};
+
+// Eventos
+
+// Cuando el jugador pulsa "Pedir carta"
+
+getCardButton?.addEventListener("click", () => {
+  displayCard();
+  updateUserScore();
+  checkGameStatus();
+});
+
+// Cuando el jugador pulsa "Plantarse"
+
+standButton?.addEventListener("click", () => {
+  if (gameMessage) {
+    gameMessage.textContent = `Te has plantado con ${userScore} puntos`;
+  }
+  toggleButtons(true);
+  if (knowOutComeButton) {
+    knowOutComeButton.style.display = "inline-block";
+  }
+});
+
+// Saber que habría pasado.
+knowOutComeButton?.addEventListener("click", () => {
+  let simulatedScore = userScore;
+  let outComeMessage = "";
+
+  while (simulatedScore < 7.5) {
+    const cardUrl = getCardUrl();
+    if (currentCard instanceof HTMLImageElement) {
+      currentCard.src = cardUrl
+    }
+    simulatedScore += selectedCardValue();
+
+    if (simulatedScore === 7.5) {
+      outComeMessage = "!Habrías ganado¡";
+      break;
+    }
+
+    if (simulatedScore > 7.5) {
+      outComeMessage = `!Te habrías pasado con ${simulatedScore} puntos¡`;
+      break;
+    }
+  }
+
+  if (!outComeMessage) {
+    outComeMessage = `!Te habrías quedado con ${simulatedScore} puntos¡`;
+  }
+
+  if (gameMessage) {
+    gameMessage.textContent = outComeMessage;
+  }
+
+  if ( knowOutComeButton ) {
+    knowOutComeButton.style.display = "none";
+  }
+});
+
+// Cuando el jugador pulsa "New Game"
+
+newGameButton?.addEventListener("click", () => {
   userScore = 0;
-  currentCard.src = "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg";
-  gameMessage.textContent = "Comienza a Jugar";
+  updateScoreDisplay();
+  toggleButtons(false);
+  if (knowOutComeButton) {
+    knowOutComeButton.style.display = "none";
+  }
 
-  if ( showCard ) showCard.textContent = `Puntuación: ${0}`;
+  if (gameMessage) {
+    gameMessage.textContent = "Nuevo juego iniciado. !Saca una carta¡";
+  }
+});
 
-  getCardButton.disabled = false;
-  standButton.disabled = false;
-  newGameButton.disabled = true;
+// Inicializacion del juego
+
+toggleButtons(false);
+if (newGameButton instanceof HTMLButtonElement) {
   newGameButton.style.display = "none";
-};
-
-// Función para plantarse
-
-const stand = () => {
-  gameMessage.textContent = `Te has plantado con ${userScore} puntos.`;
-  endGame();
-};
-
-getCardButton?.addEventListener("click", giveCard);
-newGameButton?.addEventListener("click",newGame);
-standButton?.addEventListener("click", stand);
+}
