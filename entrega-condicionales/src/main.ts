@@ -72,6 +72,10 @@ const updateUserScore = () => {
   updateScoreDisplay();
 };
 
+// Funcion que actualiza simulatedUserScore;
+
+
+
 // Función que comprueba si hemos ganado o no la partida;
 
 const checkGameStatus = (): void => {
@@ -125,13 +129,16 @@ standButton?.addEventListener("click", () => {
 knowOutComeButton?.addEventListener("click", () => {
   let simulatedScore = userScore;
   let outComeMessage = "";
+  const updateSimulatedUserScore = () => {
+    simulatedScore = sumCardValue();
+    updateScoreDisplay();
+  };
 
   while (simulatedScore < 7.5) {
-    const cardUrl = getCardUrl();
-    if (currentCard instanceof HTMLImageElement) {
-      currentCard.src = cardUrl
-    }
+    displayCard()
     simulatedScore += selectedCardValue();
+    updateSimulatedUserScore()
+    
 
     if (simulatedScore === 7.5) {
       outComeMessage = "!Habrías ganado¡";
