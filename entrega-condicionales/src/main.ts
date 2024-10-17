@@ -72,10 +72,6 @@ const updateUserScore = () => {
   updateScoreDisplay();
 };
 
-// Funcion que actualiza simulatedUserScore;
-
-
-
 // Función que comprueba si hemos ganado o no la partida;
 
 const checkGameStatus = (): void => {
@@ -118,6 +114,7 @@ getCardButton?.addEventListener("click", () => {
 standButton?.addEventListener("click", () => {
   if (gameMessage) {
     gameMessage.textContent = `Te has plantado con ${userScore} puntos`;
+    standButton.style.display = "none";
   }
   toggleButtons(true);
   if (knowOutComeButton) {
@@ -129,25 +126,25 @@ standButton?.addEventListener("click", () => {
 knowOutComeButton?.addEventListener("click", () => {
   let simulatedScore = userScore;
   let outComeMessage = "";
+
+  // Funcion que actualiza simulatedUserScore;
+
   const updateSimulatedUserScore = () => {
     simulatedScore = sumCardValue();
     updateScoreDisplay();
   };
 
-  while (simulatedScore < 7.5) {
-    displayCard()
+  if (simulatedScore < 7.5) {
+    displayCard();
     simulatedScore += selectedCardValue();
-    updateSimulatedUserScore()
-    
+    updateSimulatedUserScore();
 
     if (simulatedScore === 7.5) {
       outComeMessage = "!Habrías ganado¡";
-      break;
     }
 
     if (simulatedScore > 7.5) {
       outComeMessage = `!Te habrías pasado con ${simulatedScore} puntos¡`;
-      break;
     }
   }
 
@@ -159,7 +156,7 @@ knowOutComeButton?.addEventListener("click", () => {
     gameMessage.textContent = outComeMessage;
   }
 
-  if ( knowOutComeButton ) {
+  if (knowOutComeButton) {
     knowOutComeButton.style.display = "none";
   }
 });
@@ -170,6 +167,10 @@ newGameButton?.addEventListener("click", () => {
   userScore = 0;
   updateScoreDisplay();
   toggleButtons(false);
+  if ( standButton) {
+    standButton.style.display = "inline-block";
+  }
+  
   if (knowOutComeButton) {
     knowOutComeButton.style.display = "none";
   }
