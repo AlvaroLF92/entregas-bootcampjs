@@ -19,14 +19,14 @@ const knowOutComeButton = document.getElementById("knowOutCome");
 // Función que devuelve un número aleatorio;
 
 const getRandomNumber = (): number => {
-  return Math.floor(Math.random() * cardSource.length);
+  return Math.floor(Math.random() * 12) + 1;
 };
 
 // Función que ajusta el número si es mayor que 7 sumando +2;
 
-/*const adjustNumber = (num: number): number => {
-  return num > 7 ? num + 2 : num;
-};*/
+const adjustNumber = (num: number): number => {
+  return (num > 7 && num < 10 )? num + 2 : num;
+};
 
 // Funcion que muestra la puntuación total en el HTML;
 
@@ -39,9 +39,19 @@ const updateScoreDisplay = (): void => {
 // Funcion que devuelve la url de la carta elegida;
 
 const getCardUrl = (): string => {
-  const cardIndex = getRandomNumber();
-  selectedCard = cardSource[cardIndex];
-  return selectedCard.url;
+  const randomNumber = getRandomNumber();
+  const adjustedNumber = adjustNumber(randomNumber);
+  
+  const card = cardSource.find((card) => {
+    const regex = new RegExp(`/${adjustedNumber}_`);
+    return regex.test(card.url);
+  });
+
+  if (card) {
+    selectedCard = card;
+    return card.url
+  }
+  throw new Error("No se encontró la carta")
 };
 
 // Funcion que muestra la carta seleccionada en el HTML;
@@ -167,6 +177,9 @@ newGameButton?.addEventListener("click", () => {
   userScore = 0;
   updateScoreDisplay();
   toggleButtons(false);
+  if (currentCard instanceof HTMLImageElement) {
+    currentCard.src = "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg";
+  }
   if ( standButton) {
     standButton.style.display = "inline-block";
   }
@@ -176,7 +189,7 @@ newGameButton?.addEventListener("click", () => {
   }
 
   if (gameMessage) {
-    gameMessage.textContent = "Nuevo juego iniciado. !Saca una carta¡";
+    gameMessage.textContent = "Comienza a Jugar";
   }
 });
 
