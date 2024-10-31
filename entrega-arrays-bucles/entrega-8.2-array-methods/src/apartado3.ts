@@ -7,15 +7,14 @@ import { Pacientes } from "./pacientes";
 export const reasignaPacientesAMedicoFamilia = (
   pacientes: Pacientes[]
 ): Pacientes[] => {
-  const pacientesReasignados : Pacientes[] = pacientes.map((paciente) => {
+  return pacientes.map((paciente) => {
     if (paciente.especialidad === "Pediatra") {
       return {
         ...paciente,
         especialidad: "Medico de familia",
       };
-    }
-    return paciente;
+    } else return paciente;
   });
-
-  return pacientesReasignados;
 };
+
+

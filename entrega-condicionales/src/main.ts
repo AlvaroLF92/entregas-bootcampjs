@@ -25,7 +25,7 @@ const getRandomNumber = (): number => {
 // Función que ajusta el número si es mayor que 7 sumando +2;
 
 const adjustNumber = (num: number): number => {
-  return (num > 7 && num < 10 )? num + 2 : num;
+  return num > 7 && num < 10 ? num + 2 : num;
 };
 
 // Funcion que muestra la puntuación total en el HTML;
@@ -41,7 +41,7 @@ const updateScoreDisplay = (): void => {
 const getCardUrl = (): string => {
   const randomNumber = getRandomNumber();
   const adjustedNumber = adjustNumber(randomNumber);
-  
+
   const card = cardSource.find((card) => {
     const regex = new RegExp(`/${adjustedNumber}_`);
     return regex.test(card.url);
@@ -49,9 +49,9 @@ const getCardUrl = (): string => {
 
   if (card) {
     selectedCard = card;
-    return card.url
+    return card.url;
   }
-  throw new Error("No se encontró la carta")
+  throw new Error("No se encontró la carta");
 };
 
 // Funcion que muestra la carta seleccionada en el HTML;
@@ -119,25 +119,26 @@ getCardButton?.addEventListener("click", () => {
   checkGameStatus();
 });
 
-// Cuando el jugador pulsa "Plantarse"
-
-standButton?.addEventListener("click", () => {
+// Funcionalidad botón plantarse
+const stand = () => {
   if (gameMessage) {
     gameMessage.textContent = `Te has plantado con ${userScore} puntos`;
-    standButton.style.display = "none";
+    if (standButton) standButton.style.display = "none";
   }
   toggleButtons(true);
   if (knowOutComeButton) {
     knowOutComeButton.style.display = "inline-block";
   }
-});
+};
+// Evento cuando el jugador pulsa "Plantarse"
 
-// Saber que habría pasado.
-knowOutComeButton?.addEventListener("click", () => {
+standButton?.addEventListener("click", stand);
+
+// Funcionalidad botón saber que habría pasado
+
+const knowOutCome = () => {
   let simulatedScore = userScore;
   let outComeMessage = "";
-
-  // Funcion que actualiza simulatedUserScore;
 
   const updateSimulatedUserScore = () => {
     simulatedScore = sumCardValue();
@@ -169,21 +170,26 @@ knowOutComeButton?.addEventListener("click", () => {
   if (knowOutComeButton) {
     knowOutComeButton.style.display = "none";
   }
-});
+};
 
-// Cuando el jugador pulsa "New Game"
+// Evento botón Saber que habría pasado.
 
-newGameButton?.addEventListener("click", () => {
+knowOutComeButton?.addEventListener("click", knowOutCome);
+
+// Funcionalidad botón nueva partida
+
+const newGame = () => {
   userScore = 0;
   updateScoreDisplay();
   toggleButtons(false);
   if (currentCard instanceof HTMLImageElement) {
-    currentCard.src = "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg";
+    currentCard.src =
+      "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg";
   }
-  if ( standButton) {
+  if (standButton) {
     standButton.style.display = "inline-block";
   }
-  
+
   if (knowOutComeButton) {
     knowOutComeButton.style.display = "none";
   }
@@ -191,7 +197,11 @@ newGameButton?.addEventListener("click", () => {
   if (gameMessage) {
     gameMessage.textContent = "Comienza a Jugar";
   }
-});
+};
+
+// Evento cuando el jugador pulsa "New Game"
+
+newGameButton?.addEventListener("click", newGame);
 
 // Inicializacion del juego
 

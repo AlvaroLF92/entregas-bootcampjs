@@ -5,16 +5,14 @@ import { Pacientes } from "./pacientes";
 // Queremos activar el protocolo de urgencia si cualquier de los pacientes tiene un ritmo cardíaco superior a 100 pulsaciones por minuto y una temperatura corporal superior a 39 grados.
 
 export const activarProtocoloUrgencia = (pacientes: Pacientes[]): boolean => {
-  let activarProctolo = false;
-
-  if(pacientes.some(
-    (paciente) => paciente.frecuenciaCardiaca > 100 && paciente.temperatura > 39 
-  )) {
-    activarProctolo = true
-  }
+  let activarProctolo = pacientes.some(
+    (paciente) => paciente.frecuenciaCardiaca > 100 && paciente.temperatura > 39
+  );
 
   return activarProctolo;
 };
+
+// En lugar de devolver la variable con un booleano,he aprovechado que .some devuelve un booleano para que el return del método sea lo que se devuelve como valor en la variable, creo que así cumple con lo esperado.
 
 export const pacientes2: Pacientes[] = [
   {

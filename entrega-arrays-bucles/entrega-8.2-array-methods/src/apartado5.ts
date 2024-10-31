@@ -4,11 +4,14 @@ import { Pacientes } from "./pacientes";
 
 // Queremos calcular el número total de pacientes que están asignados a la especialidad de Medico de familia, y lo que están asignados a Pediatría y a cardiología
 
+// Funcion original mia
+
 interface NumeroPacientesPorEspecialidad {
   medicoDeFamilia: number;
   pediatria: number;
   cardiologia: number;
 }
+
 
 export const cuentaPacientesPorEspecialidad = (
   pacientes: Pacientes[]
@@ -21,12 +24,74 @@ export const cuentaPacientesPorEspecialidad = (
 
   pacientes.forEach((paciente) => {
     if (paciente.especialidad === "Cardiólogo") {
-      numeroDepacientesEspecialidad.cardiologia += 1;
+      numeroDepacientesEspecialidad.cardiologia ++;
     } else if (paciente.especialidad === "Medico de familia") {
-      numeroDepacientesEspecialidad.medicoDeFamilia += 1;
+      numeroDepacientesEspecialidad.medicoDeFamilia ++;
     } else if (paciente.especialidad === "Pediatra")
-      numeroDepacientesEspecialidad.pediatria += 1;
+      numeroDepacientesEspecialidad.pediatria ++;
   });
 
   return numeroDepacientesEspecialidad;
 };
+
+
+// Funciones picadas por un amigo, son muy interesantes y he decidido dejarlas comentadas pues es código de alto nivel.
+
+/*
+export const cuentaPacientesPorEspecialidad = (pacientes: Pacientes[]): any => {
+  let numeroDepacientesEspecialidad: any = {};
+
+  pacientes.forEach((paciente) => {
+
+    let especialidadDelPaciente: string = paciente.especialidad.toLowerCase().replaceAll(' ', '');
+
+    if(numeroDepacientesEspecialidad[especialidadDelPaciente]) {
+        numeroDepacientesEspecialidad[especialidadDelPaciente]++;
+    } else {
+        numeroDepacientesEspecialidad[especialidadDelPaciente] = 1;
+    }
+
+  });
+
+  return numeroDepacientesEspecialidad;
+};
+*/
+
+/*
+interface keyValue {
+  key: string;
+  value: number;
+}
+
+export const cuentaPacientesPorEspecialidad = (pacientes: Pacientes[]): keyValue[] => {
+
+  let numeroDepacientesEspecialidad: keyValue[] = [];
+
+  pacientes.forEach((paciente) => {
+
+    let especialidadDelPaciente: keyValue | undefined =
+      numeroDepacientesEspecialidad.filter(
+        (especialidad) => paciente.especialidad === especialidad.key
+      )[0] ?? undefined; 
+
+    if (!especialidadDelPaciente) {
+
+      numeroDepacientesEspecialidad.push({
+        key: paciente.especialidad,
+        value: 1
+        
+      });
+
+    } else {
+      numeroDepacientesEspecialidad.map((especialidad) => {
+
+        if (especialidad.key === especialidadDelPaciente.key)
+          especialidad.value++;
+
+      });
+    }
+  });
+
+  return numeroDepacientesEspecialidad;
+};
+*/

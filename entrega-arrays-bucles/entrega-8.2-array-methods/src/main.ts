@@ -48,14 +48,14 @@ console.log(
 
 // APARTADO 4
 
-const listaSinPacientesPediatra = reasignaPacientesAMedicoFamilia(pacientes);
-
 console.log(
   "APARTADO-4-Hay pacientes de pediatría: ",
   HayPacientesDePediatria(pacientes)
 );
 
 // Vamos a reutilizar la funcion de reasignacion de pediatría para ver si funciona nuestro checkeo del apartado 4 y devuelve "false" puesto que en la lista modificada no hay pacientes de pediatría.
+
+const listaSinPacientesPediatra = reasignaPacientesAMedicoFamilia(pacientes);
 
 console.log(
   "APARTADO-4-Hay pacientes de pediatría: ",
