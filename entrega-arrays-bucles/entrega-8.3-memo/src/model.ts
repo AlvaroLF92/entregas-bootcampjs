@@ -5,7 +5,7 @@ import img4 from "./assets/pngs/4.png";
 import img5 from "./assets/pngs/5.png";
 import img6 from "./assets/pngs/6.png";
 
-type EstadoPartida =
+export type EstadoPartida =
   | "PartidaNoIniciada"
   | "CeroCartasLevantadas"
   | "UnaCartaLevantada"
@@ -17,6 +17,12 @@ export interface Carta {
   imagen: string;
   estaVuelta: boolean;
   encontrada: boolean;
+}
+
+export interface DatosCarta {
+  index: number;
+  carta: Carta;
+  divImagen: HTMLImageElement;
 }
 
 interface InfoCarta {

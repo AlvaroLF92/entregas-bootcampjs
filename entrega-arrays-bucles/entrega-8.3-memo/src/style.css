@@ -128,3 +128,13 @@ Aqui comienzan los estilos que añadí yo para crear la app.
   pointer-events: none;
   opacity: 0.5;
 }
+
+.mensajes-juego {
+  min-height: 50px;  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1); 
+  border-radius: 5px;
+  transition: min-height 0.3s ease;
+}
